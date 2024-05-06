@@ -18,7 +18,7 @@ const Button = styled.button`
 
 function App() {
   const buttonContent = (text) => {
-    fetch("/data", {
+    fetch("/selectednote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: text,
@@ -28,19 +28,31 @@ function App() {
 
   const [matchedNote, setmatchedNote] = useState([{}]);
   const [buttonText, setbuttonText] = useState("0");
+  const [matchedNoteColor, setmatchedNoteColor] = useState("black");
 
   useEffect(() => {
     fetch("/correctnote")
       .then((res) => res.json())
       .then((matchedNote) => {
         setmatchedNote(matchedNote);
+        if (matchedNote["bool"] === "True") {
+          setmatchedNoteColor("green");
+        } else {
+          setmatchedNoteColor("red");
+        }
         console.log(matchedNote);
       });
   }, [buttonText]);
 
   return (
     <div>
-      <p>{matchedNote["bool"]}</p>
+      <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
+      <div>
+        <img
+          src={require("./images/GuitarFretboard.png")}
+          style={{ height: 117, width: 901 }}
+        />
+      </div>
       <Button onClick={() => buttonContent("C")}>C</Button>
       <Button onClick={() => buttonContent("C#")}>C#</Button>
       <Button onClick={() => buttonContent("D")}>D</Button>

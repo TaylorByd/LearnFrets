@@ -21,10 +21,9 @@ default_notes = ['E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#'
          'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E']
 fretboard = [['0']*25 for i in range(6)]
 
-tunearr = ['E', 'A', 'D', 'G', 'B', 'E']
-
 for i in range(6):
     for j in range(25):
         fretboard[i][j] = default_notes[j]
 
-print(setTune(fretboard, tunearr))
+tunearr = ['E', 'A', 'D', 'G', 'B', 'E']
+setTune(fretboard, tunearr)

@@ -1,9 +1,12 @@
 from flask import Flask, request
+import fretboard_logic
+import random
 
 app = Flask(__name__)
 data1 = ""
+random_note = random.choice(random.choice(fretboard_logic.fretboard))
 
-@app.route('/data', methods=['POST', 'GET'])
+@app.route('/selectednote', methods=['POST', 'GET'])
 def receive_data():
     data = request.data.decode()
     print(data)
@@ -13,7 +16,10 @@ def receive_data():
 
 @app.route('/correctnote')
 def received():
-    if data1 == 'C#':
+    global random_note
+    print("random note: ",random_note)
+    if data1 == random_note:
+        random_note = random.choice(random.choice(fretboard_logic.fretboard))
         return {"bool" : "True"}
     else:
         return {"bool" : "False"}
