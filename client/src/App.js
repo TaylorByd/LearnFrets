@@ -48,6 +48,7 @@ function App() {
     <div>
       <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
       <div>
+        <style>{"body { background-color: purple; }"}</style>
         <img
           src={require("./images/GuitarFretboard.png")}
           style={{ height: 117, width: 901 }}

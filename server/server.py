@@ -3,22 +3,22 @@ import fretboard_logic
 import random
 
 app = Flask(__name__)
-data1 = ""
+detectedNote = ""
 random_note = random.choice(random.choice(fretboard_logic.fretboard))
 
 @app.route('/selectednote', methods=['POST', 'GET'])
 def receive_data():
-    data = request.data.decode()
-    print(data)
-    global data1
-    data1 = data
+    selectedNote = request.data.decode()
+    print("Selected Note: ", selectedNote)
+    global detectedNote
+    detectedNote = selectedNote
     return "Data Received!"
 
 @app.route('/correctnote')
 def received():
     global random_note
-    print("random note: ",random_note)
-    if data1 == random_note:
+    print("Random Note: ", random_note)
+    if detectedNote == random_note:
         random_note = random.choice(random.choice(fretboard_logic.fretboard))
         return {"bool" : "True"}
     else:
