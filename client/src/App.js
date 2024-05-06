@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 
 const Button = styled.button`
@@ -17,20 +17,42 @@ const Button = styled.button`
 `;
 
 function App() {
+  const buttonContent = (text) => {
+    fetch("/data", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: text,
+    });
+    setbuttonText(text);
+  };
+
+  const [matchedNote, setmatchedNote] = useState([{}]);
+  const [buttonText, setbuttonText] = useState("0");
+
+  useEffect(() => {
+    fetch("/correctnote")
+      .then((res) => res.json())
+      .then((matchedNote) => {
+        setmatchedNote(matchedNote);
+        console.log(matchedNote);
+      });
+  }, [buttonText]);
+
   return (
     <div>
-      <Button>E</Button>
-      <Button>F</Button>
-      <Button>F#</Button>
-      <Button>G</Button>
-      <Button>G#</Button>
-      <Button>A</Button>
-      <Button>A#</Button>
-      <Button>B</Button>
-      <Button>C</Button>
-      <Button>C#</Button>
-      <Button>D</Button>
-      <Button>D#</Button>
+      <p>{matchedNote["bool"]}</p>
+      <Button onClick={() => buttonContent("C")}>C</Button>
+      <Button onClick={() => buttonContent("C#")}>C#</Button>
+      <Button onClick={() => buttonContent("D")}>D</Button>
+      <Button onClick={() => buttonContent("D#")}>D#</Button>
+      <Button onClick={() => buttonContent("E")}>E</Button>
+      <Button onClick={() => buttonContent("F")}>F</Button>
+      <Button onClick={() => buttonContent("F#")}>F#</Button>
+      <Button onClick={() => buttonContent("G")}>G</Button>
+      <Button onClick={() => buttonContent("G#")}>G#</Button>
+      <Button onClick={() => buttonContent("A")}>A</Button>
+      <Button onClick={() => buttonContent("A#")}>A#</Button>
+      <Button onClick={() => buttonContent("B")}>B</Button>
     </div>
   );
 }
