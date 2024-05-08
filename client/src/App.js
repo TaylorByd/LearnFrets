@@ -22,11 +22,11 @@ function App() {
       headers: { "Content-Type": "application/json" },
       body: text,
     });
-    setbuttonText(text);
+    setUpdate(update + 1);
   };
 
+  const [update, setUpdate] = useState([{}]);
   const [matchedNote, setmatchedNote] = useState([{}]);
-  const [buttonText, setbuttonText] = useState("0");
   const [matchedNoteColor, setmatchedNoteColor] = useState("black");
 
   useEffect(() => {
@@ -41,7 +41,7 @@ function App() {
         }
         console.log(matchedNote);
       });
-  }, [buttonText]);
+  }, [update]);
 
   return (
     <div>
