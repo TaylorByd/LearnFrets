@@ -8,7 +8,6 @@ const Button = styled.button`
   border-radius: 5px;
   border: none;
   cursor: pointer;
-  box-shadow: 0px 2px 2px lightgray;
   margin: 0px 2px;
   transition: ease background-color 250ms;
   &:hover {
@@ -48,10 +47,11 @@ function App() {
     <div>
       <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
       <div>
-        <style>{"body { background-color: purple; }"}</style>
+        <style>{"body { background-color: #222831; }"}</style>
         <img
-          src={require("./images/GuitarFretboard.png")}
+          src={require("./images/modified_guitar_fretboard.png")}
           style={{ height: 117, width: 901 }}
+          alt="Guitar Fretboard"
         />
       </div>
       <Button onClick={() => buttonContent("C")}>C</Button>
