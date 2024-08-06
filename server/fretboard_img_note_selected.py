@@ -11,6 +11,6 @@ for i in range(6):
         dot_coordinates[i][j] = [x_coordinates[j], y_dot]
 
 def place_dot_img(dot_coordinates):
-    img = cv.imread("./client/src/images/GuitarFretboard.png")
+    img = cv.imread("..\\client\\src\\images\GuitarFretboard.png")
     img = cv.circle(img, dot_coordinates, 10, (0, 0, 255), -1, lineType=cv.LINE_AA)
-    cv.imwrite("./client/src/images/modified_guitar_fretboard.png", img)
+    cv.imwrite("..\\client\\src\\images\\modified_guitar_fretboard.png", img)

@@ -16,37 +16,43 @@ const Button = styled.button`
 `;
 
 function App() {
+  const [initialized, setInitialized] = useState(false); // State to track if initialization has occurred
+  const [matchedNote, setmatchedNote] = useState([{}]);
+  const [matchedNoteColor, setmatchedNoteColor] = useState("black");
+
   const buttonContent = (text) => {
     fetch("/selectednote", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: text,
-    });
-    setUpdate(update + 1);
-  };
-
-  const [update, setUpdate] = useState([{}]);
-  const [matchedNote, setmatchedNote] = useState([{}]);
-  const [matchedNoteColor, setmatchedNoteColor] = useState("black");
-
-  useEffect(() => {
-    fetch("/correctnote")
-      .then((res) => res.json())
+    })
+      .then((response) => response.json())
       .then((matchedNote) => {
         setmatchedNote(matchedNote);
-        if (matchedNote["bool"] === "True") {
-          setmatchedNoteColor("green");
-        } else {
-          setmatchedNoteColor("red");
-        }
+        const color = matchedNote["bool"] === "True" ? "green" : "red";
+        setmatchedNoteColor(color);
         console.log(matchedNote);
-      });
-  }, [update]);
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
+  useEffect(() => {
+    if (!initialized) {
+      // Only initialize if not already initialized
+      fetch("/initialize")
+        .then((res) => res.text())
+        .then((message) => {
+          console.log(message);
+          setInitialized(true); // Set initialization to true after successful call
+        })
+        .catch((error) => console.error("Initialization failed:", error));
+    }
+  }, [initialized]); // Empty dependency array to only run on initial mount
 
   return (
     <div>
-      <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
       <div>
+        <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
         <style>{"body { background-color: #222831; }"}</style>
         <img
           src={require("./images/modified_guitar_fretboard.png")}
@@ -54,18 +60,13 @@ function App() {
           alt="Guitar Fretboard"
         />
       </div>
-      <Button onClick={() => buttonContent("C")}>C</Button>
-      <Button onClick={() => buttonContent("C#")}>C#</Button>
-      <Button onClick={() => buttonContent("D")}>D</Button>
-      <Button onClick={() => buttonContent("D#")}>D#</Button>
-      <Button onClick={() => buttonContent("E")}>E</Button>
-      <Button onClick={() => buttonContent("F")}>F</Button>
-      <Button onClick={() => buttonContent("F#")}>F#</Button>
-      <Button onClick={() => buttonContent("G")}>G</Button>
-      <Button onClick={() => buttonContent("G#")}>G#</Button>
-      <Button onClick={() => buttonContent("A")}>A</Button>
-      <Button onClick={() => buttonContent("A#")}>A#</Button>
-      <Button onClick={() => buttonContent("B")}>B</Button>
+      {["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"].map(
+        (note) => (
+          <Button key={note} onClick={() => buttonContent(note)}>
+            {note}
+          </Button>
+        )
+      )}
     </div>
   );
 }
