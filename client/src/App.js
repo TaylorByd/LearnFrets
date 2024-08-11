@@ -4,7 +4,7 @@ import styled from "styled-components";
 const Button = styled.button`
   background-color: #004d40;
   color: white;
-  padding: 5px 15px;
+  padding: 5px 28px;
   border-radius: 5px;
   border: none;
   cursor: pointer;
@@ -17,8 +17,6 @@ const Button = styled.button`
 
 function App() {
   const [initialized, setInitialized] = useState(false); // State to track if initialization has occurred
-  const [matchedNote, setmatchedNote] = useState([{}]);
-  const [matchedNoteColor, setmatchedNoteColor] = useState("black");
 
   const buttonContent = (text) => {
     fetch("/selectednote", {
@@ -27,11 +25,13 @@ function App() {
       body: text,
     })
       .then((response) => response.json())
-      .then((matchedNote) => {
-        setmatchedNote(matchedNote);
-        const color = matchedNote["bool"] === "True" ? "green" : "red";
-        setmatchedNoteColor(color);
-        console.log(matchedNote);
+      .then((data) => {
+        if (data["bool"] === "True") {
+          fetch("/correctnote");
+        } else {
+          fetch("/incorrectnote");
+        }
+        console.log(data);
       })
       .catch((error) => console.error("Error:", error));
   };
@@ -52,21 +52,35 @@ function App() {
   return (
     <div>
       <div>
-        <p style={{ color: matchedNoteColor }}>{matchedNote["bool"]}</p>
         <style>{"body { background-color: #222831; }"}</style>
-        <img
-          src={require("./images/modified_guitar_fretboard.png")}
-          style={{ height: 117, width: 901 }}
-          alt="Guitar Fretboard"
-        />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            padding: "10px",
+          }}
+        >
+          <img
+            src={require("./images/modified_guitar_fretboard.png")}
+            style={{ height: 117, width: 901 }}
+            alt="Guitar Fretboard"
+          />
+        </div>
       </div>
-      {["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"].map(
-        (note) => (
-          <Button key={note} onClick={() => buttonContent(note)}>
-            {note}
-          </Button>
-        )
-      )}
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+        }}
+      >
+        {["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"].map(
+          (note) => (
+            <Button key={note} onClick={() => buttonContent(note)}>
+              {note}
+            </Button>
+          )
+        )}
+      </div>
     </div>
   );
 }
