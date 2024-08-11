@@ -2,6 +2,7 @@ from flask import Flask, request, session, redirect, url_for
 import fretboard_logic
 import fretboard_img_note_selected
 import random
+import threading
 
 app = Flask(__name__)
 app.secret_key = 'add secret key later'
@@ -46,17 +47,19 @@ def compareRandomNote():
         return {"bool": "False"}
 
 @app.route('/correctnote')
-def greenDot():
-    random_col = session.get('random_col', '')      # Retrieve random_row from session
-    random_row = session.get('random_row', '')      # Retrieve random_col from session
-    fretboard_img_note_selected.correct_note(fretboard_img_note_selected.dot_coordinates[random_row][random_col])
+async def greenDot():
+    random_col = session.get('random_col', '')
+    random_row = session.get('random_row', '')
+    thread = threading.Thread(target=fretboard_img_note_selected.correct_note, args=(fretboard_img_note_selected.dot_coordinates[random_row][random_col],))
+    thread.start()
     return "Green"
 
 @app.route('/incorrectnote')
-def redDot():
-    random_col = session.get('random_col', '')      # Retrieve random_row from session
-    random_row = session.get('random_row', '')      # Retrieve random_col from session
-    fretboard_img_note_selected.incorrect_note(fretboard_img_note_selected.dot_coordinates[random_row][random_col])
+async def redDot():
+    random_col = session.get('random_col', '')
+    random_row = session.get('random_row', '')
+    thread = threading.Thread(target=fretboard_img_note_selected.incorrect_note, args=(fretboard_img_note_selected.dot_coordinates[random_row][random_col],))
+    thread.start()
     return "Red"
 
 if __name__ == "__main__":
