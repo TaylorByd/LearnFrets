@@ -50,23 +50,31 @@ function App() {
   }, [initialized]); // Empty dependency array to only run on initial mount
 
   return (
-    <div>
-      <div>
-        <style>{"body { background-color: #222831; }"}</style>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            padding: "10px",
-          }}
-        >
-          <img
-            src={require("./images/modified_guitar_fretboard.png")}
-            style={{ height: 117, width: 901 }}
-            alt="Guitar Fretboard"
-          />
-        </div>
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        height: "100vh", // Make the container take up the full height of the viewport
+        flexDirection: "column", // Stack the image and buttons vertically
+      }}
+    >
+      <style>{"body { background-color: #222831; }"}</style>
+
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          padding: "10px",
+        }}
+      >
+        <img
+          src={require("./images/modified_guitar_fretboard.png")}
+          style={{ height: 117, width: 901 }}
+          alt="Guitar Fretboard"
+        />
       </div>
+
       <div
         style={{
           display: "flex",

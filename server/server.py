@@ -14,10 +14,10 @@ def initialize():
         print("flag run")
         session['random_col'] = random.randint(0, 24)
         session['random_row'] = random.randint(0, 5)
-        random_col = session.get('random_col', '')  # Retrieve random_row from session
-        random_row = session.get('random_row', '')  # Retrieve random_col from session
+        random_col = session.get('random_col', '')
+        random_row = session.get('random_row', '')
         session['randomNote'] = fretboard_logic.fretboard[random_row][random_col]
-        fretboard_img_note_selected.create_dot(255, 0, 255, fretboard_img_note_selected.dot_coordinates[random_row][random_col])
+        fretboard_img_note_selected.create_dot(0, 100, 180, fretboard_img_note_selected.dot_coordinates[random_row][random_col])
     session['runFlag'] = True
     return 'This function can only run once.'
 
@@ -30,14 +30,14 @@ def getSelectedNote():
 
 @app.route('/comparenote')
 def compareRandomNote():
-    detectedNote = session.get('detectedNote', '')  # Retrieve detectedNote from session
-    randomNote = session.get('randomNote', '')      # Retrieve randomNote from session
+    detectedNote = session.get('detectedNote', '')
+    randomNote = session.get('randomNote', '')
     print("Random Note: ", randomNote)
     if detectedNote == randomNote:
         session['random_col'] = random.randint(0, 24)
         session['random_row'] = random.randint(0, 5)
-        random_col = session.get('random_col', '')      # Retrieve random_row from session
-        random_row = session.get('random_row', '')      # Retrieve random_col from session
+        random_col = session.get('random_col', '')
+        random_row = session.get('random_row', '')
         session['randomNote'] = fretboard_logic.fretboard[random_row][random_col]
         fretboard_img_note_selected.create_dot(255, 0, 255, fretboard_img_note_selected.dot_coordinates[random_row][random_col])
         print("New Random Note:", session['randomNote'])
@@ -47,7 +47,7 @@ def compareRandomNote():
         return {"bool": "False"}
 
 @app.route('/correctnote')
-async def greenDot():
+def correctNote():
     random_col = session.get('random_col', '')
     random_row = session.get('random_row', '')
     thread = threading.Thread(target=fretboard_img_note_selected.correct_note, args=(fretboard_img_note_selected.dot_coordinates[random_row][random_col],))
@@ -55,7 +55,7 @@ async def greenDot():
     return "Green"
 
 @app.route('/incorrectnote')
-async def redDot():
+def incorrectNote():
     random_col = session.get('random_col', '')
     random_row = session.get('random_row', '')
     thread = threading.Thread(target=fretboard_img_note_selected.incorrect_note, args=(fretboard_img_note_selected.dot_coordinates[random_row][random_col],))
